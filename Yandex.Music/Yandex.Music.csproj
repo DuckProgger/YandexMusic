@@ -1,0 +1,117 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\src\favicon.ico</ApplicationIcon>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Yandex.Music.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>Yandex.Music.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Compile Remove="Services\**" />
+    <Compile Remove="Store\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="Store\**" />
+    <None Remove="Models\**" />
+    <None Remove="Services\**" />
+    <None Remove="Store\**" />
+    <Page Remove="Models\**" />
+    <Page Remove="Services\**" />
+    <Page Remove="Store\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="cache.db" />
+    <None Remove="Resources\src\image_add.png" />
+    <None Remove="Resources\src\image_album.png" />
+    <None Remove="Resources\src\image_artist.png" />
+    <None Remove="Resources\src\image_best.png" />
+    <None Remove="Resources\src\image_block_disabled.png" />
+    <None Remove="Resources\src\image_block_disabled_focused.png" />
+    <None Remove="Resources\src\image_block_enabled.png" />
+    <None Remove="Resources\src\image_block_enabled_focused.png" />
+    <None Remove="Resources\src\image_download.png" />
+    <None Remove="Resources\src\image_empty.png" />
+    <None Remove="Resources\src\image_like_disabled.png" />
+    <None Remove="Resources\src\image_like_disabled_focused.png" />
+    <None Remove="Resources\src\image_like_enabled.png" />
+    <None Remove="Resources\src\image_like_enabled_focused.png" />
+    <None Remove="Resources\src\image_menu.png" />
+    <None Remove="Resources\src\image_playlist.png" />
+    <None Remove="Resources\src\image_podcast.png" />
+    <None Remove="Resources\src\image_random.png" />
+    <None Remove="Resources\src\image_repeat.png" />
+    <None Remove="Resources\src\image_track.png" />
+    <None Remove="Resources\src\image_upload.png" />
+    <None Remove="Resources\src\image_user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\src\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\src\image_add.png" />
+    <Resource Include="Resources\src\image_album.png" />
+    <Resource Include="Resources\src\image_artist.png" />
+    <Resource Include="Resources\src\image_best.png"/>
+    <Resource Include="Resources\src\image_block_enabled_focused.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DeepCloner" Version="0.10.4" />
+    <PackageReference Include="MaterialDesignColors" Version="2.0.6" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.4.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yandex.Api\Yandex.Api.csproj" />
+    <ProjectReference Include="..\Yandex.Music.Core\Yandex.Music.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\src\image_block_disabled.png" />
+    <Resource Include="Resources\src\image_block_disabled_focused.png" />
+    <Resource Include="Resources\src\image_block_enabled.png" />
+    <Resource Include="Resources\src\image_download.png" />
+    <Resource Include="Resources\src\image_empty.png" />
+    <Resource Include="Resources\src\image_like_disabled.png" />
+    <Resource Include="Resources\src\image_like_disabled_focused.png" />
+    <Resource Include="Resources\src\image_like_enabled.png" />
+    <Resource Include="Resources\src\image_like_enabled_focused.png" />
+    <Resource Include="Resources\src\image_menu.png" />
+    <Resource Include="Resources\src\image_playlist.png" />
+    <Resource Include="Resources\src\image_podcast.png" />
+    <Resource Include="Resources\src\image_random.png" />
+    <Resource Include="Resources\src\image_repeat.png" />
+    <Resource Include="Resources\src\image_track.png" />
+    <Resource Include="Resources\src\image_upload.png" />
+    <Resource Include="Resources\src\image_user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Styles\MainWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
+</Project>

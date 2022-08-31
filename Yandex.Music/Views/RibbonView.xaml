@@ -1,0 +1,439 @@
+﻿<UserControl x:Class="Yandex.Music.Views.RibbonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Yandex.Music.Views"
+             xmlns:vm="clr-namespace:Yandex.Music.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:c="clr-namespace:Yandex.Music.Views.Converters"
+             xmlns:core="clr-namespace:Yandex.Music.Core;assembly=Yandex.Music.Core"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000"
+             d:DataContext="{d:DesignInstance vm:RibbonViewModel}"
+             Background="{StaticResource MaterialDesignDarkBackground}">
+  <UserControl.Resources>
+    <c:DurationConverter x:Key="DurationConverter"/>
+    <c:BooleanToVisibilityHiddenConverter x:Key="BooleanToVisibilityHiddenConverter"/>
+  </UserControl.Resources>
+  <UserControl.ContextMenu>
+    <ContextMenu>
+      <MenuItem Header="Открыть"
+                Command="{Binding FollowLinkCommand}"
+                CommandParameter="{Binding SelectedEntity.Query}"
+                IsEnabled="{Binding IsSelectedEntitiesOpenSupports}">
+        <MenuItem.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <ContentControl Content="{materialDesign:PackIcon Kind=ArrowForward}" Margin="0,0,10,0"/>
+              <TextBlock Text="Открыть"/>
+            </StackPanel>
+          </DataTemplate>
+        </MenuItem.HeaderTemplate>
+      </MenuItem>
+      <MenuItem Header="Загрузить" 
+                Command="{Binding DownloadSelectedListCommand}"
+                CommandParameter="{Binding SelectedEntities}"
+                IsEnabled="{Binding IsSelectedEntitiesDownloadSupports}">
+        <MenuItem.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <ContentControl Content="{materialDesign:PackIcon Kind=Download}" Margin="0,0,10,0"/>
+              <TextBlock Text="Загрузить"/>
+            </StackPanel>
+          </DataTemplate>
+        </MenuItem.HeaderTemplate>
+      </MenuItem>
+      <MenuItem Header="Воспроизвести" 
+                Command="{Binding PlaySelectedListCommand}"
+                CommandParameter="{Binding SelectedEntities}"
+                IsEnabled="{Binding IsSelectedEntitiesPlaySupports}">
+        <MenuItem.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <ContentControl Content="{materialDesign:PackIcon Kind=Play}" Margin="0,0,10,0"/>
+              <TextBlock Text="Воспроизвести"/>
+            </StackPanel>
+          </DataTemplate>
+        </MenuItem.HeaderTemplate>
+      </MenuItem>
+      <Separator/>
+      <MenuItem Header="Поиск на странице"
+                Command="{Binding ChangeSearchFieldVisibilityCommand}">
+        <MenuItem.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <ContentControl Content="{materialDesign:PackIcon Kind=Search}" Margin="0,0,10,0"/>
+              <TextBlock Text="Поиск на странице"/>
+            </StackPanel>
+          </DataTemplate>
+        </MenuItem.HeaderTemplate>
+      </MenuItem>
+    </ContextMenu>
+  </UserControl.ContextMenu>
+  <b:Interaction.Triggers>
+    <b:EventTrigger EventName="Loaded">
+      <b:InvokeCommandAction Command="{Binding InitializingCommand}"/>
+    </b:EventTrigger>
+    <b:KeyTrigger Key="F" Modifiers="Control">
+      <b:InvokeCommandAction Command="{Binding ChangeSearchFieldVisibilityCommand}"/>
+    </b:KeyTrigger>
+  </b:Interaction.Triggers>
+  <Grid >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!--Панель навигации-->
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+      <!--Кнопка Назад-->
+      <Button Grid.Column="0" Content="{materialDesign:PackIcon Kind=ArrowBack}" 
+              Command="{Binding PrevPageCommand}" Margin="5" />
+      <!--Кнопка Вперёд-->
+      <Button Grid.Column="1" Content="{materialDesign:PackIcon Kind=ArrowForward}"
+              Command="{Binding NextPageCommand}" Margin="5"/>
+      <!--Кнопка Домой-->
+      <Button Grid.Column="2" Content="{materialDesign:PackIcon Kind=Home}" Margin="5"
+              Command="{Binding FollowLinkCommand}" 
+              CommandParameter="{Binding StartPageLink}"/>
+      <!--Поисковая строка-->
+      <TextBox Grid.Column="3"
+               Padding="5"
+               Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+               materialDesign:HintAssist.Hint="Ссылка / поисковый запрос"
+               Height="30"
+               Style="{StaticResource MaterialDesignOutlinedTextBox}">
+        <TextBox.InputBindings>
+          <KeyBinding Command="{Binding Path=FollowLinkCommand}"
+                      CommandParameter="{Binding Query}"
+                      Key="Enter" />
+        </TextBox.InputBindings>
+      </TextBox>
+      <!--Кнопка поиска-->
+      <Button Grid.Column="4" Content="{materialDesign:PackIcon Kind=Search}" Margin="5"
+              Command="{Binding FollowLinkCommand}" 
+              CommandParameter="{Binding Query}"/>
+    </Grid>
+
+    <!--Поиск на странице-->
+    <DockPanel Grid.Row="1" 
+               Visibility="{Binding SearchFieldVisibility, 
+      Converter={StaticResource BooleanToVisibilityConverter}}">
+      <Button DockPanel.Dock="Right" Width="48" Margin="5,0,5,0" 
+              Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+              Content="{materialDesign:PackIcon Kind=Close}"
+              Command="{Binding ChangeSearchFieldVisibilityCommand}"/>
+      <TextBox Text="{Binding EntityFilter, UpdateSourceTrigger=PropertyChanged}"
+               materialDesign:HintAssist.Hint="Поиск на странице"/>
+    </DockPanel>
+
+    <!--Основная панель-->
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="0.4*"/>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="0.4*"/>
+      </Grid.ColumnDefinitions>
+
+      <!--Левая панель с выбранным треком-->
+      <DockPanel Grid.Column="0">
+
+        <!--Описание-->
+        <StackPanel DockPanel.Dock="Top"
+                    Visibility="{Binding IsEntitySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <!--Заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedEntity.Title}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+          <!--Обложка-->
+          <Image DockPanel.Dock="Top" Source="{Binding SelectedEntity.Cover}" 
+                 Width="200" Height="200"
+                 Style="{StaticResource ImageHighResStyle}"/>
+          <!--Второй заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedEntity.SecondTitle}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+          <!--Третий заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding SelectedEntity.ThirdTitle}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+        </StackPanel>
+
+        <!--Кнопки-->
+        <StackPanel DockPanel.Dock="Bottom">
+          <Button Content="Треки" Margin="10,0,10,10"
+                  Command="{Binding FollowLinkByUrlTypeCommand}"
+                  CommandParameter="{x:Static core:EntityHandlerUrlType.ArtistTracks}"
+                  Visibility="{Binding ArtistButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Альбомы"  Margin="10,0,10,10"
+                  Visibility="{Binding ArtistButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Command="{Binding FollowLinkByUrlTypeCommand}"
+                  CommandParameter="{x:Static core:EntityHandlerUrlType.ArtistAlbums}"/>
+          <Button Content="Воспроизвести" Margin="10,0,10,10"
+                  Command="{Binding PlaySelectedListCommand}"
+                  CommandParameter="{Binding SelectedEntities}"
+                  Visibility="{Binding IsSelectedEntitiesPlaySupports, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Отмена" Margin="10,0,10,10"
+                  Command="{Binding CancelPlayCommand}"
+                  Visibility="{Binding PlayCancellationButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Загрузить" Margin="10,0,10,10"
+                  Command="{Binding DownloadSelectedListCommand}"
+                  CommandParameter="{Binding SelectedEntities}"
+                  Visibility="{Binding IsSelectedEntitiesDownloadSupports, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+
+        <!--Костыль, потому что иначе DockPanel некорректно располагает элементы-->
+        <Label DockPanel.Dock="Bottom"/>
+      </DockPanel>
+
+      <!--Лента и уведомления-->
+      <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Лента-->
+        <DataGrid Name="Ribbon"
+              Grid.Row="0" ItemsSource="{Binding Collection}"
+              AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserReorderColumns="False"
+              CanUserResizeColumns="False"
+              CanUserResizeRows="False"
+              CanUserDeleteRows="False"
+              HeadersVisibility="None">
+          <DataGrid.CellStyle>
+            <StaticResource ResourceKey="DataGridCellStyle"/>
+          </DataGrid.CellStyle>
+          <DataGrid.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick"
+                              Command="{Binding FollowLinkCommand}"
+                              CommandParameter="{Binding SelectedEntity.Query}"/>
+          </DataGrid.InputBindings>
+          <b:Interaction.Triggers>
+            <b:EventTrigger EventName="SelectionChanged">
+              <b:InvokeCommandAction CommandParameter="{Binding ElementName=Ribbon, Path=SelectedItems}" 
+                                   Command="{Binding GetSelectedItemsCommand }" />
+            </b:EventTrigger>
+          </b:Interaction.Triggers>
+          <DataGrid.Columns>
+            <DataGridTemplateColumn Width="2*">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="auto"/>
+                      <ColumnDefinition Width="auto"/>
+                      <ColumnDefinition Width="auto"/>
+                      <ColumnDefinition Width="auto"/>
+                      <ColumnDefinition />
+                      <ColumnDefinition Width="auto"/>
+                      <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Картинка типа сущности-->
+                    <Image Grid.Column="0" Style="{StaticResource CaptionImageStyle}"
+                         Width="20" Height="20" Margin="0,0,10,0"/>
+
+                    <!--Значок лучшего трека (молния)-->
+                    <Image Grid.Column="1" Source="../Resources/src/image_best.png"
+                         Visibility="{Binding IsBest, 
+                    Converter={StaticResource BooleanToVisibilityHiddenConverter}}"
+                         Style="{StaticResource ImageHighResStyle}"
+                         HorizontalAlignment="Center"
+                         Width="15"/>
+
+                    <!--Номер трека-->
+                    <TextBlock Grid.Column="2" Text="{Binding OrderNumber}" 
+                             Style="{StaticResource OrderNumberTextBlock}"/>
+
+                    <!--Обложка-->
+                    <Image Grid.Column="3" Source="{Binding Cover}" 
+                         Width="auto" Height="65" Margin="0,0,10,0"
+                         Style="{StaticResource CaptionImage}"/>
+
+                    <!--Заголовки-->
+                    <StackPanel Grid.Column="4" VerticalAlignment="Center" Style="{StaticResource CaptionStackPanel}">
+
+                      <!--Заголовок первого уровня-->
+                      <ListBox ItemsSource="{Binding Titles}" 
+                             Style="{StaticResource TitlesListBoxStyle}" 
+                             PreviewMouseWheel="HandlePreviewMouseWheel">
+                        <ListBox.ItemTemplate>
+                          <DataTemplate>
+                            <TextBlock  Margin="0" >
+                            <Hyperlink Command="{Binding DataContext.FollowLinkCommand,
+                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RibbonView}}}"
+                                       CommandParameter="{Binding Query}"
+                                       Style="{StaticResource HyperlinkStyle}">
+                              <TextBlock Text="{Binding Title}" 
+                                         Style="{StaticResource TitleTextBlockStyle}" 
+                                         Padding="0"  Margin="0" HorizontalAlignment="Center"/>
+                            </Hyperlink>
+                          </TextBlock>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+
+                      <!--Заголовок второго уровня-->
+                      <ListBox ItemsSource="{Binding SecondTitles}" 
+                             PreviewMouseWheel="HandlePreviewMouseWheel"
+                             Style="{StaticResource TitlesListBoxStyle}">
+                        <ListBox.ItemTemplate>
+                          <DataTemplate>
+                            <TextBlock  Margin="0" >
+                              <Hyperlink Command="{Binding DataContext.FollowLinkCommand,
+                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RibbonView}}}"
+                                         CommandParameter="{Binding Query}"
+                                         Style="{StaticResource HyperlinkStyle}">
+                                <TextBlock Text="{Binding Title}" 
+                                           Style="{StaticResource TitleTextBlockStyle}" Padding="0"/>
+                              </Hyperlink>
+                            </TextBlock>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+
+                      <!--Заголовок третьего уровня-->
+                      <ListBox ItemsSource="{Binding ThirdTitles}" 
+                             PreviewMouseWheel="HandlePreviewMouseWheel"
+                             Style="{StaticResource TitlesListBoxStyle}">
+                        <ListBox.ItemTemplate>
+                          <DataTemplate>
+                            <TextBlock  Margin="0">
+                            <Hyperlink Command="{Binding DataContext.FollowLinkCommand,
+                              RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RibbonView}}}"
+                                       CommandParameter="{Binding Query}"
+                                       Style="{StaticResource ThirdTitleHyperlinkStyle}" >
+                              <TextBlock Text="{Binding Title}" 
+                                         Style="{StaticResource TitleTextBlockStyle}" Padding="0"/>
+                            </Hyperlink>
+                          </TextBlock>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+
+                    </StackPanel>
+
+                    <!--Длительность-->
+                    <TextBlock Grid.Column="5"  
+                             Text="{Binding Duration,
+                    Converter={StaticResource DurationConverter}}" 
+                             VerticalAlignment="Center"
+                             Margin="10"/>
+
+                    <!--Кнопки лайк/блокировка-->
+                    <StackPanel Grid.Column="6" Orientation="Horizontal" >
+                      <Button Style="{StaticResource RibbonButtonStyle}"
+                            Command="{Binding DataContext.LikeCommand,
+                      RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RibbonView}}}"
+                            Visibility="{Binding SupportLike, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Style="{StaticResource LikeImageStyle}"/>
+                      </Button>
+                      <Button Style="{StaticResource RibbonButtonStyle}"
+                            Command="{Binding DataContext.DislikeCommand,
+                  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RibbonView}}}"
+                            Visibility="{Binding SupportDislike, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Style="{StaticResource DislikeImageStyle}"/>
+                      </Button>
+                    </StackPanel>
+
+                  </Grid>
+
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <!--Уведомления-->
+        <ListBox Grid.Row="1" Template="{StaticResource NotifierTemplate}"/>
+
+      </Grid>
+
+      <!--Правая панель с плейлистом-->
+      <DockPanel Grid.Column="2">
+
+        <!--Описание-->
+        <StackPanel DockPanel.Dock="Top"
+                    Visibility="{Binding IsEntitySelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <!--Заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentPageData.MainEntity.Title}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+          <!--Обложка-->
+          <Image DockPanel.Dock="Top" Source="{Binding CurrentPageData.MainEntity.Cover}" 
+                 Width="200" Height="200"
+                 Style="{StaticResource ImageHighResStyle}"/>
+          <!--Второй заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentPageData.MainEntity.SecondTitle}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+          <!--Третий заголовок-->
+          <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentPageData.MainEntity.ThirdTitle}" 
+                     Style="{StaticResource TextBlockStyle}"/>
+        </StackPanel>
+
+        <!--Кнопки-->
+        <StackPanel DockPanel.Dock="Bottom">
+          <Button Content="Треки" Margin="10,0,10,10"
+                  Command="{Binding FollowLinkByUrlTypeCommand}"
+                  CommandParameter="{x:Static core:EntityHandlerUrlType.ArtistTracks}"
+                  Visibility="{Binding ArtistButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Альбомы"  Margin="10,0,10,10"
+                  Visibility="{Binding ArtistButtonsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Command="{Binding FollowLinkByUrlTypeCommand}"
+                  CommandParameter="{x:Static core:EntityHandlerUrlType.ArtistAlbums}"/>
+          <Button Content="Воспроизвести" Margin="10,0,10,10"
+                  Command="{Binding PlaySelectedListCommand}"
+                  CommandParameter="{Binding SelectedEntities}"
+                  Visibility="{Binding IsSelectedEntitiesPlaySupports, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Отмена" Margin="10,0,10,10"
+                  Command="{Binding CancelPlayCommand}"
+                  Visibility="{Binding PlayCancellationButtonVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <Button Content="Загрузить" Margin="10,0,10,10"
+                  Command="{Binding DownloadSelectedListCommand}"
+                  CommandParameter="{Binding SelectedEntities}"
+                  Visibility="{Binding IsMainEntityDownloadSupports, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+
+        <!--Костыль, потому что иначе DockPanel некорректно располагает элементы-->
+        <Label DockPanel.Dock="Bottom"/>
+      </DockPanel>
+
+      <!--<DockPanel Grid.Column="2" >
+        <TextBlock DockPanel.Dock="Top" 
+                   Text="{Binding CurrentPageData.MainEntity.Title}" 
+                   Style="{StaticResource TextBlockStyle}"/>
+        <Image DockPanel.Dock="Top" Source="{Binding CurrentPageData.MainEntity.Cover}" 
+               Width="200" Height="200"
+               Style="{StaticResource ImageHighResStyle}"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentPageData.MainEntity.SecondTitle}" 
+                   Style="{StaticResource TextBlockStyle}"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CurrentPageData.MainEntity.Description}" 
+                   Style="{StaticResource TextBlockStyle}" HorizontalAlignment="Stretch"/>
+        <Button DockPanel.Dock="Bottom" Margin="10" Content="Загрузить"
+                Command="{Binding DownloadEntityCommand}"
+                CommandParameter="{Binding CurrentPageData.MainEntity}"
+                Visibility="{Binding DownloadMainEntityButtonVisibility,
+          Converter={StaticResource BooleanToVisibilityConverter},
+          UpdateSourceTrigger=PropertyChanged}"/>
+        -->
+      <!--Костыль, потому что иначе DockPanel некорректно располагает элементы-->
+      <!--
+        <Label DockPanel.Dock="Bottom"/>
+      </DockPanel>-->
+
+    </Grid>
+
+  </Grid>
+</UserControl>

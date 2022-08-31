@@ -1,0 +1,302 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:infrastructure="clr-namespace:Yandex.Music.Infrastructure"
+                    xmlns:local="clr-namespace:Yandex.Music.Views"
+                    xmlns:core="clr-namespace:Yandex.Music.Core;assembly=Yandex.Music.Core">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.listbox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.datagrid.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.passwordbox.xaml" />
+    <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.window.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <Color x:Key="AmberColor">#FFC107</Color>
+  <Color x:Key="AmberDarkColor">#7F6720</Color>
+
+  <SolidColorBrush x:Key="AmberColorBrush" Color="{StaticResource AmberColor}"/>
+  <SolidColorBrush x:Key="AmberDarkColorBrush" Color="{StaticResource AmberDarkColor}"/>
+
+  <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+    <Style.Triggers>
+      <Trigger Property="IsSelected" Value="True">
+        <Setter Property="Background" Value="{StaticResource AmberDarkColorBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="ImageHighResStyle" TargetType="{x:Type Image}">
+    <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality"/>
+  </Style>
+
+  <Style x:Key="MyMaterialDesignOutlinedTextBox"
+         BasedOn="{StaticResource MaterialDesignOutlinedTextBox}"
+         TargetType="TextBox">
+    <Setter Property="MinWidth" Value="80" />
+    <Setter Property="Margin" Value="5" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style x:Key="DarkPasswordBoxStyle" TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource MaterialDesignOutlinedPasswordBox}">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Background" Value="{DynamicResource MaterialDesignDarkBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignDarkForeground}"/>
+  </Style>
+
+  <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignTextBlock}">
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="Background" Value="{DynamicResource MaterialDesignDarkBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource MaterialDesignDarkForeground}"/>
+    <Setter Property="Margin" Value="10"/>
+    <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+    <Setter Property="Height" Value="auto"/>
+  </Style>
+
+  <LinearGradientBrush x:Key="TitleBarBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+    <GradientBrush.GradientStops>
+      <GradientStopCollection>
+        <GradientStop Color="#E7EBF7" Offset="0.0"/>
+        <GradientStop Color="#CEE3FF" Offset="0.5"/>
+        <GradientStop Color="#DEF7FF" Offset="1.0"/>
+      </GradientStopCollection>
+    </GradientBrush.GradientStops>
+  </LinearGradientBrush>
+
+  <Style TargetType="{x:Type ListBoxItem}" x:Key="NotifierListBoxItemStyle">
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Error}">
+        <Setter Property="ListBoxItem.Background" Value="#F26064"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Info}">
+        <Setter Property="ListBoxItem.Background" Value="#8CD6AD"/>
+        <Setter Property="ListBoxItem.Foreground" Value="DarkSlateGray"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding Type}" Value="{x:Static infrastructure:MessageType.Warning}">
+        <Setter Property="ListBoxItem.Background" Value="#FFFCCC"/>
+        <Setter Property="ListBoxItem.Foreground" Value="DarkSlateGray"/>
+      </DataTrigger>
+    </Style.Triggers>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="FontFamily" Value="Segoe UI"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Style.Resources>
+      <Style TargetType="Border">
+        <Setter Property="CornerRadius" Value="5"/>
+      </Style>
+    </Style.Resources>
+  </Style>
+
+  <Style TargetType="{x:Type Image}" x:Key="CaptionImageStyle" BasedOn="{StaticResource ImageHighResStyle}">
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.Album}">
+        <Setter Property="Source" Value="../Resources/src/image_album.png"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.Artist}">
+        <Setter Property="Source" Value="../Resources/src/image_artist.png"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.Playlist}">
+        <Setter Property="Source" Value="../Resources/src/image_playlist.png"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.Podcast}">
+        <Setter Property="Source" Value="../Resources/src/image_podcast.png"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.Track}">
+        <Setter Property="Source" Value="../Resources/src/image_track.png"/>
+      </DataTrigger>
+      <DataTrigger Binding="{Binding EntityType}" Value="{x:Static core:EntityType.User}">
+        <Setter Property="Source" Value="../Resources/src/image_user.png"/>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="{x:Type Image}" x:Key="LikeImageStyle" BasedOn="{StaticResource ImageHighResStyle}">
+    <Style.Triggers>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Liked}" Value="True"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_like_enabled_focused.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Liked}" Value="True"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_like_enabled.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Liked}" Value="False"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_like_disabled_focused.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Liked}" Value="False"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_like_disabled.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="{x:Type Image}" x:Key="DislikeImageStyle" BasedOn="{StaticResource ImageHighResStyle}">
+    <Style.Triggers>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Disliked}" Value="True"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_block_enabled_focused.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Disliked}" Value="True"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_block_enabled.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Disliked}" Value="False"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_block_disabled_focused.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+      <MultiDataTrigger>
+        <MultiDataTrigger.Conditions>
+          <Condition Binding="{Binding Disliked}" Value="False"/>
+          <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="False"/>
+        </MultiDataTrigger.Conditions>
+        <MultiDataTrigger.Setters>
+          <Setter Property="Source" Value="../Resources/src/image_block_disabled.png"/>
+        </MultiDataTrigger.Setters>
+      </MultiDataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="{x:Type Button}" x:Key="RibbonButtonStyle" BasedOn="{StaticResource MaterialDesignFlatButton}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="Transparent"/>
+    <Setter Property="Margin" Value="10,0,0,0"/>
+    <Setter Property="Width" Value="20"/>
+    <Setter Property="Height" Value="20"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+
+  <Style x:Key="TitleTextBlockStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignTextBlock}">
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding DataContext.IsCaption, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridCell}}}" Value="True">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource AmberColorBrush}"/>
+        <Setter Property="FontSize" Value="16"/>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style TargetType="{x:Type ListBox}" x:Key="TitlesListBoxStyle" BasedOn="{StaticResource MaterialDesignListBox}">
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemContainerStyle">
+      <Setter.Value>
+        <Style TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                  <ContentPresenter Margin="5"/>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="HyperlinkStyle" TargetType="{x:Type Hyperlink}">
+    <Setter Property="Foreground" Value="AliceBlue"/>
+    <Setter Property="TextDecorations" Value=""/>
+    <Style.Triggers>
+      <Trigger Property="IsMouseOver" Value="True">
+        <Setter Property="Foreground" Value="{StaticResource AmberColorBrush}"/>
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="True">
+        <Setter Property="Cursor" Value="Hand"/>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="ThirdTitleHyperlinkStyle" TargetType="{x:Type Hyperlink}" BasedOn="{StaticResource HyperlinkStyle}">
+    <Setter Property="Foreground" Value="Gray"/>
+  </Style>
+
+
+  <Style x:Key="SettingsItemDockPanel" TargetType="{x:Type DockPanel}">
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="Width" Value="400"/>
+  </Style>
+
+  <Style x:Key="SettingsItemTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyle}">
+    <Setter Property="FontSize" Value="16"/>
+  </Style>
+
+  <Style x:Key="SettingsItemTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+    <Setter Property="HorizontalAlignment" Value="Right"/>
+    <Setter Property="TextAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="10"/>
+    <Setter Property="Height" Value="30"/>
+    <Setter Property="FontSize" Value="16"/>
+  </Style>
+
+  <Style x:Key="OrderNumberTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignTextBlock}">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="TextAlignment" Value="Right"/>
+    <Setter Property="Margin" Value="0,0,10,0"/>
+    <Setter Property="Width" Value="30"/>
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="Foreground" Value="Gray"/>
+  </Style>
+
+  <Style x:Key="CaptionStackPanel" TargetType="{x:Type StackPanel}" >
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsCaption}" Value="true">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="CaptionImage" TargetType="{x:Type Image}" BasedOn="{StaticResource ImageHighResStyle}">
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding Cover}" Value="{x:Null}">
+        <Setter Property="Visibility" Value="Collapsed"/>
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+</ResourceDictionary>

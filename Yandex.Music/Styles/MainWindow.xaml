@@ -1,0 +1,183 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Yandex.Music.Views">
+
+
+    <!--<Style x:Key="CustomWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CaptionHeight="30"
+                              CornerRadius="4"
+                              GlassFrameThickness="0"
+                              NonClientFrameEdges="None"
+                              ResizeBorderThickness="5"
+                              UseAeroCaptionButtons="False" />
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="BorderBrush" Value="Black" />
+        <Setter Property="Background" Value="Gray" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="5,30,5,5">
+                            <AdornerDecorator>
+                                <ContentPresenter />
+                            </AdornerDecorator>
+                        </Border>
+
+                        <Grid Height="30"
+                            VerticalAlignment="Top">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Margin="5,0">
+                                <Button Content="A" Margin="0,0,5,0" VerticalAlignment="Center" Click="Button_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                <Button Content="B" Margin="0,0,5,0" VerticalAlignment="Center" Click="Button_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                <Button Content="C" Margin="0,0,5,0" VerticalAlignment="Center" Click="Button_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                                <Button Content="D" Margin="0,0,5,0" VerticalAlignment="Center" Click="Button_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                            </StackPanel>
+
+
+                            <TextBlock Margin="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       FontSize="16"
+                                       Foreground="White"
+                                       Text="{TemplateBinding Title}" 
+                                       Grid.Column="1"/>
+
+
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="2">
+                                <Button x:Name="btnClose"
+                                    Width="15"
+                                    Margin="5"
+                                    Click="CloseClick"
+                                    Content="X"
+                                    WindowChrome.IsHitTestVisibleInChrome="True" />
+
+
+                                <Button x:Name="btnRestore"
+                                    Width="15"
+                                    Margin="5"
+                                    Click="MaximizeRestoreClick"
+                                    Content="#"
+                                    WindowChrome.IsHitTestVisibleInChrome="True" />
+
+                                <Button x:Name="btnMinimize"
+                                    Width="15"
+                                    Margin="5"
+                                    VerticalContentAlignment="Bottom"
+                                    Click="MinimizeClick"
+                                    Content="_"
+                                    WindowChrome.IsHitTestVisibleInChrome="True" />
+                            </StackPanel>
+                        </Grid>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+
+
+
+    <!--<Style x:Key="CustomMainWindowStyle" TargetType="{x:Type local:CustomMainWindow}">
+
+        -->
+    <!--<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />-->
+    <!--<Setter Property="Background" Value="#FFF1F1F1" />-->
+    <!--
+        <Setter Property="BorderBrush" Value="#FF464775" />
+        -->
+    <!--<Setter Property="WindowChrome.WindowChrome">
+                 <Setter.Value>
+                     <WindowChrome UseAeroCaptionButtons="False"
+                               CaptionHeight="{Binding Path=(SystemParameters.WindowNonClientFrameThickness).Top}" />
+                 </Setter.Value>
+             </Setter>
+             
+             <Setter Property="Template">
+                 <Setter.Value>
+                     <ControlTemplate TargetType="{x:Type local:CustomMainWindow}">
+                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" x:Name="WindowBorder">
+                             <Grid x:Name="LayoutRoot" Background="{TemplateBinding Background}">
+                                 <Grid.RowDefinitions>
+                                     <RowDefinition Height="Auto" />
+                                     <RowDefinition Height="*" />
+                                 </Grid.RowDefinitions>
+                                 <Grid x:Name="WindowTitlePanel"
+                                       Height="{Binding Path=(SystemParameters.WindowNonClientFrameThickness).Top}"
+                                       Background="{TemplateBinding BorderBrush}"
+                                       Margin="0,-1,0,0">
+                                     <Grid.ColumnDefinitions>
+                                         <ColumnDefinition Width="*" />
+                                         <ColumnDefinition Width="Auto" />
+                                     </Grid.ColumnDefinitions>
+    
+                                     <StackPanel Orientation="Horizontal">
+                                         <Image Source="{TemplateBinding Icon}"
+                                                VerticalAlignment="Center"
+                                                Margin="5,0,0,0"
+                                                Height="{x:Static SystemParameters.SmallIconHeight}"
+                                                Width="{x:Static SystemParameters.SmallIconWidth}"
+                                                WindowChrome.IsHitTestVisibleInChrome="True">
+                                         </Image>
+    
+                                         <ContentControl IsTabStop="False"
+                                                     Margin="5,0,0,0"
+                                                     Foreground="White"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     FontSize="{DynamicResource {x:Static SystemFonts.CaptionFontSizeKey}}"
+                                                     Content="{TemplateBinding Title}" />
+                                     </StackPanel>
+                                     <StackPanel x:Name="WindowCommandButtonsPanel"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Stretch"
+                                             Background="Transparent"
+                                             Orientation="Horizontal"
+                                             WindowChrome.IsHitTestVisibleInChrome="True"
+                                             Margin="0,0,-1,0">
+                                         <ContentPresenter 
+                                                       Focusable="False" />
+                                         <Button x:Name="MinimizeButton"  />
+                                         <Grid Margin="1,0,1,0">
+                                             <Button x:Name="RestoreButton" Visibility="Collapsed" />
+                                             <Button x:Name="MaximizeButton" />
+                                         </Grid>
+                                         <Button x:Name="CloseButton"  Background="Red"  />
+                                     </StackPanel>
+                                 </Grid>
+                                 <AdornerDecorator Grid.Row="1" KeyboardNavigation.IsTabStop="False">
+                                     <ContentPresenter Content="{TemplateBinding Content}" x:Name="MainContentPresenter" KeyboardNavigation.TabNavigation="Cycle" />
+                                 </AdornerDecorator>
+                                 <ResizeGrip x:Name="ResizeGrip"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Bottom"
+                                         Grid.Row="1"
+                                         IsTabStop="False"
+                                         Visibility="Hidden"
+                                         WindowChrome.ResizeGripDirection="BottomRight" />
+                             </Grid>
+                         </Border>
+    
+                     </ControlTemplate>
+                 </Setter.Value>
+             </Setter>-->
+    <!--
+    </Style>-->
+
+</ResourceDictionary>
